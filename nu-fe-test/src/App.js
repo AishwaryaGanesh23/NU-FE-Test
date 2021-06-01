@@ -12,7 +12,7 @@ import axios from "axios";
 import "./App.css";
 
 const countriesURL = "https://restcountries.eu/rest/v2/all";
-
+const count =0;
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -22,54 +22,60 @@ const useStyles = makeStyles({
 function App() {
   const [countriesData, setCountriesData] = useState([]);
   const classes = useStyles();
-
+  
   const getCountriesWithAxios = async () => {
     const response = await axios.get(countriesURL);
     setCountriesData(response.data);
-    setCountriesData(response.data);
+    // setCountriesData(response.data);    
   };
 
   useEffect(() => {
     getCountriesWithAxios();
   }, []);
 
+
   return (
     <>
       <Grid container>
         <Grid item xs={12}>
           <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="simple table">
+            <Table className={classes.table} aria-label="Countries table">
               <TableHead>
                 <TableRow>
-                  <TableCell>
+                  <TableCell  style={{width: '5%'}}>
+                    <strong>Sr. No</strong>
+                  </TableCell>
+                  <TableCell  style={{width: '300px'}}>
                     <strong>Name</strong>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <strong>Flag</strong>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="left"style={{width: '300px'}}>
                     <strong>Capital</strong>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="left">
                     <strong>Population</strong>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="left">
                     <strong>Region</strong>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {countriesData.map((country) => (
+                {countriesData.map((country,index) => (
+                  
                   <TableRow>
-                    <TableCell component="th" scope="row">
-                      {country.capital}
+                    <TableCell component="th" scope="row" align="left">
+                      {index+1}
                     </TableCell>
-                    <TableCell align="right">
-                      <img src={country.flags} alt="" width="32px" />
+                    <TableCell align="left">{country.name}</TableCell>
+                    <TableCell align="center" >
+                      <img src={country.flag} alt="" width="50px" />
                     </TableCell>
-                    <TableCell align="right">{country.name}</TableCell>
-                    <TableCell align="right">{country.population}</TableCell>
-                    <TableCell align="right">{country.region}</TableCell>
+                    <TableCell align="left">{country.capital}</TableCell>
+                    <TableCell align="left">{country.population}</TableCell>
+                    <TableCell align="left">{country.region}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
