@@ -11,3 +11,34 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+#drawerList {
+  padding: 0%;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+#drawerListItem {
+  margin: 0;
+  padding: 0 0 0 1%;
+}
+#sideFlag {
+  margin-left: 25%;
+  margin-bottom: 10%;
+  width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+  #drawerList {
+    padding: 0%;
+    font-size: 12px;
+    margin: 0;
+    top: 50%;
+    position: relative;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+}

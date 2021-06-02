@@ -10,22 +10,22 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
 import "./App.css";
-
 import clsx from 'clsx';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+
 const countriesURL = "https://restcountries.eu/rest/v2/all";
-const count =0;
+
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 600,
   },
   list: {
-    width: 250,
+  width: 300,
   },
   fullList: {
     width: 'auto',
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 function App() {
   const [countriesData, setCountriesData] = useState([]);
   const classes = useStyles();
-  
+
   const getCountriesWithAxios = async () => {
     const response = await axios.get(countriesURL);
     setCountriesData(response.data);
@@ -46,7 +46,7 @@ function App() {
     getCountriesWithAxios();
   }, []);
 
-  const [countryList, setCountryList] = React.useState([]);
+  const [countryDetails, setCountryDetails] = React.useState([]);
   const [anchor, setAnchor] = React.useState('right');
   
   const [state, setState] = React.useState({
@@ -58,7 +58,7 @@ function App() {
       return;
     }
 
-    setCountryList([country ? country.flag: '',
+    setCountryDetails([country ? country.flag: '',
                     country ? "Country: "+country.name : '',
                     country ? "Capital: "+country.capital : '',
                     country ? "Population: "+country.population : '',
@@ -71,6 +71,8 @@ function App() {
                     country ? "Borders: "+country.borders : '',
                   ]);
     setState({ ...state, [anchor]: open });
+
+    setAnchor('right');
   };
 
   
@@ -85,23 +87,19 @@ function App() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
 
-      <List>
+      <List id ="drawerList">
 
-        {countryList.map((text, index) => (
-          <ListItem key={text}>
-            <ListItem>{index === 0 ? <img src={text} alt="" width="75px" /> : <ListItemText primary={text} /> }</ListItem>
+        {countryDetails.map((text, index) => (
+          <ListItem key={text} style={{padding: '2%'}}>
+            <ListItem >
+              {index === 0 ? 
+              <img src={text} alt="" id ="sideFlag"/> : <ListItemText id ="drawerListItem" primary={text} /> 
+              }</ListItem>
           </ListItem>
+         
         ))}
       </List>
-      {/* <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List> */}
+      <Divider />
     </div>
   );
 
@@ -111,7 +109,7 @@ function App() {
   return (
     <>
 
-  <div>
+  <div >
      { 
      <React.Fragment key={anchor}>
         <SwipeableDrawer
@@ -119,28 +117,29 @@ function App() {
           open={state[anchor]}
           onClose={toggleDrawer(anchor, false)}
           onOpen={toggleDrawer(anchor, true)}
+          
         >
           {list(anchor)}
         </SwipeableDrawer>
       </React.Fragment>
       }
     </div>
-      <Grid container>
+      <Grid container style={{padding: '2%'}} id ="gridMain">
         <Grid item xs={12}>
           <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="Countries table">
-              <TableHead>
-                <TableRow>
+              <TableHead >
+                <TableRow id ='headerrow'>
                   <TableCell  style={{width: '5%'}}>
                     <strong>Sr. No</strong>
-                  </TableCell>
-                  <TableCell  style={{width: '300px'}}>
-                    <strong>Name</strong>
                   </TableCell>
                   <TableCell align="center">
                     <strong>Flag</strong>
                   </TableCell>
-                  <TableCell align="left"style={{width: '300px'}}>
+                  <TableCell  style={{width: '20%'}}>
+                    <strong>Name</strong>
+                  </TableCell>
+                  <TableCell align="left"style={{width: '20%'}}>
                     <strong>Capital</strong>
                   </TableCell>
                   <TableCell align="left">
@@ -154,15 +153,14 @@ function App() {
               <TableBody>
                 {countriesData.map((country,index) => (           
                   <TableRow>
-                    <TableCell component="th" scope="row" align="left">
+                    <TableCell component="th" scope="row" align="left" >
                       {index+1}
                     </TableCell>
-                    <TableCell align="left" onClick={toggleDrawer(anchor, true,country)} >
-                     {country.name}
-                    </TableCell>
-
-                    <TableCell align="center" >
+                    <TableCell align="center"  onClick={toggleDrawer(anchor, true,country)}>
                       <img src={country.flag} alt="" width="50px" />
+                    </TableCell>
+                    <TableCell align="left"  onClick={toggleDrawer(anchor, true,country)}>
+                     {country.name}
                     </TableCell>
                     <TableCell align="left">{country.capital}</TableCell>
                     <TableCell align="left">{country.population}</TableCell>
